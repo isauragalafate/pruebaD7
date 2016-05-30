@@ -1,0 +1,14 @@
+<?php
+
+function hola_mundo_menu() {
+    $items['test/hello'] = array(
+        'title' => 'Hola Mundo',
+        'page callback' => 'hola_mundo',
+    );
+
+    return $items;
+}
+
+function hola_mundo() {
+   return "Hola mundo";
+}

@@ -1,0 +1,4 @@
+name = Hola mundo
+description = Muestra por pantalla el mensaje de saludo "Hola mundo".
+core = 7.x
+version = 1.0
