@@ -4,6 +4,7 @@ function hola_mundo_menu() {
     $items['test/hello'] = array(
         'title' => 'Hola Mundo',
         'page callback' => 'hola_mundo',
+        'access callback' => TRUE,
     );
 
     return $items;
