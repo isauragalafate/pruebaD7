@@ -1,0 +1,4 @@
+name = Alter forms
+description = Inserta un nuevo campo en el formulario de creación de contenidos.
+core = 7.x
+version = 1.0

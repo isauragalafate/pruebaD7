@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @return array $items Array asociativo cuyas claves son las rutas y los valores son las propiedades de cada ruta
+ */
 function hola_mundo_menu() {
     $items['test/hello'] = array(
         'title' => 'Hola Mundo',
@@ -10,6 +13,9 @@ function hola_mundo_menu() {
     return $items;
 }
 
+/**
+ * @return string
+ */
 function hola_mundo() {
    return "Hola mundo";
 }

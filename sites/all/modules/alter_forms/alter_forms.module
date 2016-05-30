@@ -1,0 +1,28 @@
+<?php
+
+
+/**
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function alter_forms_form_alter(&$form, &$form_state, $form_id) {
+    if (isset($form['type']) && $form['type']['#value'] . '_node_form' == $form_id) {
+        $form['alter_forms'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Campo de prueba'),
+            '#description' => t('Este es un campo de pruebas añadido con el hook form_alter.'),
+            '#weight' => -5
+        );
+        $form['#validate'][] = 'error_submit_form_validate';
+    }
+}
+
+
+/**
+ * @param $form
+ * @param $form_state
+ */
+function error_submit_form_validate($form, &$form_state) {
+    form_set_error('alter_forms', t('Campo de prueba: Existe un error en el formulario.'));
+}
