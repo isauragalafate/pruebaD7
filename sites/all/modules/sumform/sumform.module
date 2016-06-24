@@ -1,0 +1,88 @@
+<?php
+/**
+ * @file
+ * A form module that displays two inputs and sum up the values.
+ */
+
+use Drupal\sumform\SumUp;
+
+/**
+ * Implements hook_help().
+ */
+function sumform_help($path, $arg) {
+  switch ($path) {
+    case "admin/help#sumform":
+      return '' . t("Displays a form with two inputs and sum up both values") . '';
+      break;
+  }
+}
+
+/**
+ * Implements hook_form().
+ */
+function sumform_form($node, &$form_state) {
+  $form['fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Enter two numbers to sum up'),
+    '#collapsible' => FALSE, // Added
+    '#collapsed' => FALSE,  // Added
+  );
+
+  $form['fieldset']['sum_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('First number'),
+    '#required' => TRUE,
+    '#maxlength' => 100,
+    '#size' => 10,
+  );
+
+  $form['fieldset']['sum_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Second number'),
+    '#required' => TRUE,
+    '#maxlength' => 100,
+    '#size' => 10,
+  );
+
+  $form['submit_form'] = array(
+    '#type' => 'submit',
+    '#value' => t('Sum up!'),
+  );
+
+  return $form;
+}
+
+function sumform_form_validate($form, &$form_state) {
+  if (!is_numeric($form_state['values']['sum_a'])) {
+    form_set_error('sum_a', t('This value must be numeric.'));
+  }
+  if (!is_numeric($form_state['values']['sum_b'])) {
+    form_set_error('sum_b', t('This value must be numeric.'));
+  }
+}
+
+function sumform_form_submit($form, &$form_state) {
+  $sum_a = $form_state['values']['sum_a'];
+  $sum_b = $form_state['values']['sum_b'];
+  $sumUP = new SumUp($sum_a, $sum_b);
+  $total = $sumUP->sum();
+  $form_state['rebuild'] = TRUE; //To avoid Drupal clear the form
+  drupal_set_message(t('Total = ').$total);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function sumform_menu() {
+  $items = array();
+
+  $items['examples/form-sum'] = array(
+    'title' => 'Sum up form',
+    'description' => 'A form to sum up two numbers.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('sumform_form'),
+    'access callback' => TRUE
+  );
+
+  return $items;
+}

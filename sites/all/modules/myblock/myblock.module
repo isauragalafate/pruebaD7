@@ -1,0 +1,122 @@
+<?php
+/**
+ * @file
+ *  Module to build a block using hooks
+ */
+
+
+/**
+ * Implements hook_block_info().
+ */
+function myblock_block_info() {
+  $blocks['about_me_block'] = array(
+    'info' => t('About me'),
+  );
+  $blocks['profile_picture_block'] = array(
+    'info' => t('Profile picture'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function myblock_block_configure($delta = '') {
+  $form = array();
+
+  if ($delta == 'about_me_block') {
+    $form['title'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Title',
+      '#default_value' => 'About me',
+    );
+    $form['about_me_url'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Enter your website url',
+      '#default_value' => 'http://about.me',
+    );
+  }
+
+  if ($delta == 'profile_picture_block') {
+    $form['title'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Title',
+      '#default_value' => 'My profile picture',
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function myblock_block_save($delta = '', $edit = array()) {
+  if ($delta == 'about_me_block') {
+    variable_set('about_me_url', $edit['about_me_url']);
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function myblock_block_view($delta = '') {
+  $block = array();
+  global $user;
+
+  //Using render array
+  if ($delta == 'about_me_block') {
+    $block['subject'] = t('About me');
+    $block['content'] = about_me_block_view();
+  }
+
+  //Using theme function
+  if ($delta == 'profile_picture_block') {
+    $block['subject'] = t('About me');
+    $block['content'] = theme('image_style', array(
+        'style_name' => 'thumbnail',
+        'alt' => t('Profile picture not found'),
+        'path' => $user->picture,
+        'getsize' => TRUE,
+        'attributes' => array(
+          'class' => 'thumb',
+          'width' => '150',
+          'height' => '162'
+        )
+      )
+    );
+  }
+
+  return $block;
+}
+
+/**
+ * Custom function to build a renderable array for about_me_block block.
+ * @return
+ *  returns a renderable array of block content
+ */
+function about_me_block_view() {
+  $block = array();
+
+  $image_url = 'image/imagefield_lPJFCy.gif';
+
+  $block = array(
+    'first_para' => array(
+      '#type' => 'markup',
+      '#markup' => 'A paragraph about me...',
+    ),
+    'second_para' => array(
+      '#items' => array('Name Surname', 'Hobbies', 'Civil status'),
+      '#theme' => 'item_list',
+    ),
+    'url_my_website' => array(
+      '#type' => 'link',
+      '#href' => variable_get('about_me_url', 'http://...'),
+      '#alt' => 'Url is not defined',
+      '#title' => 'About me url'
+    ),
+  );
+
+  return $block;
+}

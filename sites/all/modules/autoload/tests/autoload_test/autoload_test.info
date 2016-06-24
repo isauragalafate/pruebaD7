@@ -1,0 +1,22 @@
+name = Autolaod (Test)
+description = Testing functionality of Autoload module.
+hidden = TRUE
+core = 7.x
+
+; Wrong declaration!
+autoload = Autoload
+; Try PSR-0 standard.
+autoload[psr-0][] = Autoload
+; Try PSR-4 standard.
+autoload[psr-4][] = Autoload\Tests
+; Wrong declaration!
+autoload[] = Autoload
+
+dependencies[] = autoload
+
+; Information added by Drupal.org packaging script on 2016-04-04
+version = "7.x-1.0"
+core = "7.x"
+project = "autoload"
+datestamp = "1459809540"
+

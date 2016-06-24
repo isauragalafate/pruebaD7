@@ -1,0 +1,4 @@
+name = Sum Form
+description = Provide a form with two inputs in order to sum up those values and show it when the user submits the form.
+core = 7.x
+dependencies[] = xautoload (>= 7.x-5.0)

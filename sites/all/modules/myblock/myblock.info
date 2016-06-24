@@ -1,0 +1,3 @@
+name = My blocks
+description = Block builded using hooks
+core = 7.x
